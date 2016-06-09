@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<modification>
+  <name>viethemes - All layouts</name>
+  <code>viethemes_all_layouts</code>
+  <version>1.0</version>
+  <author>viethemes</author>
+  <link>http://www.viethemes.com</link>
+
+  <file path="catalog/model/design/layout.php">
+    <operation>
+      <search><![CDATA[return $query->rows;]]></search>
+      <add position="before"><![CDATA[
+        $all_layouts_id = $this->model_design_layout->getLayout('*');
+        if ($all_layouts_id) {
+          $all_layouts_query = $this->db->query("SELECT * FROM " . DB_PREFIX . "layout_module WHERE layout_id = '" . (int)$all_layouts_id . "' AND position = '" . $this->db->escape($position) . "' ORDER BY sort_order");
+
+          return array_merge($all_layouts_query->rows, $query->rows);
+        }
+      ]]></add>
+    </operation>
+  </file>
+
+</modification>
